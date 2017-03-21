@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>headerCellClass</key>
+            <string>PARHeaderCell</string>
+        </dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Device</string>
+            <key>footerAlignment</key>
+            <integer>0</integer>
+            <key>footerText</key>
+            <string>If specified, it will automatically connect (if available) to this device on app launch. Note: this is case senetive!</string>
+		</dict>
+
+        <dict>
+            <key>cell</key>
+            <string>PSEditTextCell</string>
+            <key>default</key>
+            <string></string>
+            <key>defaults</key>
+            <string>se.nosskirneh.plexautoremote</string>
+            <key>key</key>
+            <string>specifiedDeviceName</string>
+            <key>label</key>
+            <string>Device name</string>
+        </dict>
+	</array>
+	<key>title</key>
+	<string></string>
+</dict>
+</plist>
