@@ -1,4 +1,5 @@
 NSString *const prefPath = @"/var/mobile/Library/Preferences/se.nosskirneh.plexautoremote.plist";
+NSString *const deviceNamesKey = @"DeviceNames";
 NSMutableDictionary *preferences;
 
 @interface PMKRemotePlayer : NSObject
@@ -15,11 +16,19 @@ NSMutableDictionary *preferences;
 @end
 
 
+// Method that updates changes to .plist
+void writeToSettings() {
+    if (![preferences writeToFile:prefPath atomically:YES]) {
+        HBLogError(@"Could not save preferences!");
+    }
+}
+
+
 PMKPlayerListController *playerListController;
 
 %hook PMKPlayerManager
 
-- (id)initWithName:(id)arg1 storageController:(id)arg2 remoteControlServerProvider:(id)arg3 playbackOptions:(id)arg4 remoteControlRouter:(id)arg5 resourceControllers:(id)arg6 deviceProvider:(id)arg7 localDevice:(id)arg8 serviceAdvertizer:(id)arg9 serverManager:(id)arg10 cloud:(id)arg11 {
+- (id)initWithName:(id)arg1 storageController:(id)arg2 remoteControlServerProvider:(id)arg3 remoteControlRouter:(id)arg4 resourceControllers:(id)arg5 deviceProvider:(id)arg6 localDevice:(id)arg7 serviceAdvertizer:(id)arg8 serverManager:(id)arg9 cloud:(id)arg10 {
     
     preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:prefPath];
     if (!preferences) preferences = [[NSMutableDictionary alloc] init];
@@ -30,28 +39,46 @@ PMKPlayerListController *playerListController;
 
 %end
 
+
 BOOL didConnect = NO;
 
 %hook PMHomeViewController
 
 - (void)viewDidLoad {
-    %orig;
 
     if (!didConnect && playerListController.remotePlayers.count > 0) {
         NSString *specName = [preferences objectForKey:@"specifiedDeviceName"];
+
+        NSMutableArray<NSString *> *deviceNames = [[NSMutableArray alloc] init];
         
         // Find the matching device
+        int i = 0;
         for (PMKRemotePlayer *player in playerListController.remotePlayers) {
-            NSString *name = [playerListController.remotePlayers[0].description substringFromIndex:48];
-            name = [name substringToIndex:[name length] - 41];
+            // Remove the first crap of text
+            NSString *name = [playerListController.remotePlayers[i].description substringFromIndex:48];
+
+            // Remove the last crap of text
+            NSRange range = [name rangeOfString:@" - " options:NSBackwardsSearch];
+            name = [name substringToIndex:range.location];
+
+            // Connect to device if name matches
             if ([name isEqualToString:specName]) {
+                didConnect = YES;
                 HBLogDebug(@"Found match!");
                 [playerListController setSelectedPlayer:player];
-                didConnect = YES;
             }
+
+            HBLogDebug(@"name: %@, specName: %@", name, specName);
+            [deviceNames addObject:name];
+
+            i++;
         }
+
+        [preferences setObject:deviceNames forKey:deviceNamesKey];
+        writeToSettings();
     }
     
+    %orig;
 }
 
 %end

@@ -15,24 +15,28 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Device</string>
+			<string>Predefined device</string>
             <key>footerAlignment</key>
             <integer>0</integer>
             <key>footerText</key>
-            <string>If specified, it will automatically connect (if available) to this device on app launch. Note: this is case senetive!</string>
+            <string>If specified, it will automatically connect (if available) to this device on app launch.</string>
 		</dict>
 
         <dict>
             <key>cell</key>
-            <string>PSEditTextCell</string>
-            <key>default</key>
-            <string></string>
-            <key>defaults</key>
-            <string>se.nosskirneh.plexautoremote</string>
+            <string>PSLinkListCell</string>
             <key>key</key>
-            <string>specifiedDeviceName</string>
+            <string>Device</string>
+            <key>detail</key>
+            <string>PARColorListItemsController</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:specifier:</string>
+            <key>default</key>
+            <string>None</string>
             <key>label</key>
-            <string>Device name</string>
+            <string>Device</string>
         </dict>
 	</array>
 	<key>title</key>

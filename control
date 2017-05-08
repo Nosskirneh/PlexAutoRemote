@@ -2,7 +2,7 @@ Package: se.nosskirneh.plexautoremote
 Name: PlexAutoRemote
 Description: Set default remote player in Plex
 Depiction: https://andreashenriksson.se/repo/depictions/?p=se.nosskirneh.plexautoremote
-Version: 0.0.1
+Version: 0.0.2
 Depends: mobilesubstrate
 Architecture: iphoneos-arm
 Maintainer: Andreas Henriksson
